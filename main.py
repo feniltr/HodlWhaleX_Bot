@@ -5,11 +5,16 @@ import schedule
 import time
 import logging
 import sys
+import os
+import traceback
+import json
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
-import os
 from typing import Set, List, Dict, Optional
 from telegram import Bot
+
+
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(
@@ -21,9 +26,6 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger(__name__)
-
-# Load environment variables
-load_dotenv()
 
 # Custom logging handler for Telegram notifications
 class TelegramHandler(logging.Handler):
@@ -51,7 +53,9 @@ class XAutopostingBot:
         self.posted_articles_file = "posted_articles.txt"
         self.gpt_api_url = "https://api.a4f.co/v1/chat/completions"
         self.max_retries = 3
-        self.retry_delay = 60  # seconds
+        self.retry_delay = 30
+        self.gpt_calls = {'minute': 0, 'day': 0, 'last_reset': datetime.now(timezone.utc)}
+        self.x_calls = {'day': 0, 'last_reset': datetime.now(timezone.utc).date()}
         
         # Telegram setup
         self.telegram_token = os.getenv("TELEGRAM_TOKEN")
@@ -65,7 +69,7 @@ class XAutopostingBot:
         logger.addHandler(telegram_handler)
 
     def validate_environment(self):
-        """Validate that all required environment variables are set."""
+        """Validate required environment variables."""
         required_vars = [
             "API_KEY", "API_SECRET", "ACCESS_TOKEN", 
             "ACCESS_TOKEN_SECRET", "BEARER_TOKEN", "GPT_API_KEY",
@@ -73,12 +77,11 @@ class XAutopostingBot:
         ]
         missing_vars = [var for var in required_vars if not os.getenv(var)]
         if missing_vars:
-            logger.error(f"Missing required environment variables: {missing_vars}")
+            logger.error(f"Missing environment variables: {missing_vars}")
             sys.exit(1)
-        logger.info("All required environment variables found")
 
     def setup_api_client(self):
-        """Initialize X API client with error handling."""
+        """Initialize X API client."""
         try:
             self.client = tweepy.Client(
                 bearer_token=os.getenv("BEARER_TOKEN"),
@@ -86,113 +89,143 @@ class XAutopostingBot:
                 consumer_secret=os.getenv("API_SECRET"),
                 access_token=os.getenv("ACCESS_TOKEN"),
                 access_token_secret=os.getenv("ACCESS_TOKEN_SECRET"),
-                wait_on_rate_limit=True
+                wait_on_rate_limit=False
             )
-            logger.info("X API client initialized successfully")
         except Exception as e:
             logger.error(f"Failed to initialize X API client: {e}")
+            self.send_telegram_notification(f"X API initialization failed: {e}")
             sys.exit(1)
 
     def load_posted_articles(self) -> Set[str]:
-        """Load previously posted article titles/URLs from file, remove entries older than 30 days."""
+        """Load previously posted articles, remove entries older than 30 days."""
         if not os.path.exists(self.posted_articles_file):
-            logger.info("No posted articles file found, starting fresh")
             return set()
         
         cutoff_date = datetime.now(timezone.utc).date() - timedelta(days=30)
         kept_articles = set()
-        new_lines = []
         
         try:
             with open(self.posted_articles_file, "r", encoding='utf-8') as f:
-                for line in f:
-                    line = line.strip()
-                    if not line:
-                        continue
+                lines = f.readlines()
+            with open(self.posted_articles_file, "w", encoding='utf-8') as f:
+                for line in lines:
                     if ":" in line:
-                        date_str, article_id = line.split(":", 1)
+                        date_str, article_id = line.strip().split(":", 1)
                         try:
                             post_date = datetime.strptime(date_str, "%Y-%m-%d").date()
-                            if post_date < cutoff_date:
-                                logger.debug(f"Removing old entry: {line}")
-                                continue
-                            kept_articles.add(article_id)
-                            new_lines.append(line + "\n")
+                            if post_date >= cutoff_date:
+                                kept_articles.add(article_id)
+                                f.write(line)
                         except ValueError:
-                            logger.warning(f"Malformed date in entry, treating as old: {line}")
                             continue
-                    else:
-                        logger.warning(f"Old format entry, removing: {line}")
-                        continue
-            
-            with open(self.posted_articles_file, "w", encoding='utf-8') as f:
-                f.writelines(new_lines)
-            
-            logger.info(f"Loaded {len(kept_articles)} previously posted articles")
             return kept_articles
         except Exception as e:
             logger.error(f"Error loading posted articles: {e}")
+            self.send_telegram_notification(f"Error loading posted articles: {e}")
             return set()
 
     def save_posted_article(self, article_id: str):
-        """Save posted article title/URL to file with the current date."""
-        post_date = datetime.now(timezone.utc).date()
+        """Save posted article with current date."""
         try:
             with open(self.posted_articles_file, "a", encoding='utf-8') as f:
-                f.write(f"{post_date}:{article_id}\n")
-            logger.debug(f"Saved posted article: {article_id}")
+                f.write(f"{datetime.now(timezone.utc).date()}:{article_id}\n")
         except Exception as e:
             logger.error(f"Error saving posted article: {e}")
+            self.send_telegram_notification(f"Error saving posted article: {e}")
+
+    def check_api_limits(self, api_type: str) -> bool:
+        """Check and update API call limits."""
+        now = datetime.now(timezone.utc)
+        
+        if api_type == "gpt":
+            if (now - self.gpt_calls['last_reset']).total_seconds() >= 60:
+                self.gpt_calls['minute'] = 0
+                self.gpt_calls['last_reset'] = now
+            if now.date() != self.gpt_calls['last_reset'].date():
+                self.gpt_calls['day'] = 0
+            if self.gpt_calls['minute'] >= 5 or self.gpt_calls['day'] >= 300:
+                logger.warning("GPT API limit reached")
+                self.send_telegram_notification("GPT API limit reached")
+                return False
+            return True
+
+        elif api_type == "x":
+            if now.date() != self.x_calls['last_reset']:
+                self.x_calls['day'] = 0
+                self.x_calls['last_reset'] = now.date()
+            if self.x_calls['day'] >= 16:
+                logger.warning("X API limit reached")
+                self.send_telegram_notification("X API limit reached")
+                return False
+            self.x_calls['day'] += 1
+            return True
+
+        return False
 
     def fetch_rss_news(self) -> List[Dict]:
-        """Fetch news from RSS feeds, filter by current date, and sort by pubDate (oldest first)."""
+        """Fetch and filter news from RSS feeds for today."""
         today = datetime.now(timezone.utc).date()
         news_items = []
         
         for feed_url in self.rss_feeds:
             try:
-                logger.debug(f"Fetching RSS feed: {feed_url}")
                 feed = feedparser.parse(feed_url)
-                logger.info(f"Fetched {len(feed.entries)} articles from {feed_url}")
-                
                 for entry in feed.entries:
-                    pub_date_struct = entry.get("published_parsed", entry.get("updated_parsed", None))
+                    pub_date_struct = entry.get("published_parsed", entry.get("updated_parsed"))
                     if not pub_date_struct:
-                        logger.debug(f"No pubDate for article: {entry.get('title', 'No title')}")
                         continue
                     pub_date = datetime(*pub_date_struct[:6], tzinfo=timezone.utc)
                     if pub_date.date() != today:
-                        logger.debug(f"Article not from today: {entry.get('title', 'No title')} (Date: {pub_date.date()})")
                         continue
-                    
-                    logger.info(f"Found article from today: {entry.get('title', 'No title')}")
                     news_items.append({
-                        "title": entry.get("title", "No title"),
+                        "title": entry.get("title", ""),
                         "link": entry.get("link", ""),
                         "summary": entry.get("summary", entry.get("description", "")),
                         "pub_date": pub_date
                     })
             except Exception as e:
                 logger.error(f"Error fetching RSS feed {feed_url}: {e}")
+                self.send_telegram_notification(f"RSS feed error: {e}")
         
-        news_items.sort(key=lambda x: x["pub_date"], reverse=False)
-        logger.info(f"Found {len(news_items)} news items from today")
+        news_items.sort(key=lambda x: x["pub_date"])
         return news_items
 
-    def format_tweet_with_gpt(self, news_title: str, news_summary: str) -> Optional[str]:
-        """Use GPT-4o API to summarize and format news into a tweet."""
-        prompt = f"""
-        {news_title} - {news_summary}
+    def is_crypto_news(self, title: str, summary: str) -> Dict:
+        """Use GPT-4o to determine if news is crypto-related and not promotional."""
+        if not self.check_api_limits("gpt"):
+            return {"news_to_post": "", "status": False}
+        
+        # Ensure title and summary are strings and escape curly braces
+        title = str(title).replace("{", "{{").replace("}", "}}") if title else ""
+        summary = str(summary).replace("{", "{{").replace("}", "}}") if summary else ""
+        
+        # Debug logging to inspect inputs
+        logger.debug(f"Processing title: {title}")
+        logger.debug(f"Processing summary: {summary}")
+        
+        try:
+            prompt = f"""
+Title: {title}
+Summary: {summary}
 
-        Summarize this news into a single X post under 280 characters, including spaces, emojis, and line breaks.
+Analyze if this news is:
+1. Related to cryptocurrency, blockchain, or Web3
+2. Not promotional (e.g., not about stacking coins in wallets or promoting services)
+3. Complete (not redirecting to another page for full content)
+4. Crypto whale activity
+5. Crypto news price changes 
 
-        Requirements:
-        - Make it x(twitter) post, not a blog post
-        - Use emojis
-        - Use line breaks
-        - Use hashtags
-        - Beautiful looking post
-        """
+Return JSON:
+{{
+    "news_to_post": "Formatted tweet text under 280 characters with emojis, line breaks, and hashtags, and relevant hashtags, and relevant emojis, and relevant line breaks, and relevant formatting, Eye catching title, Dont use \"\" in news_to_post or anything which is json unfriendly ",
+    "status": true/false
+}}
+Status is true only if all criteria are met.
+"""
+        except ValueError as ve:
+            logger.error(f"F-string error in prompt construction: {ve}")
+            self.send_telegram_notification(f"F-string error in is_crypto_news: {ve}")
+            return {"news_to_post": "", "status": False}
 
         headers = {
             "Authorization": f"Bearer {os.getenv('GPT_API_KEY')}",
@@ -202,127 +235,161 @@ class XAutopostingBot:
             "model": "provider-5/gpt-4o",
             "messages": [{"role": "user", "content": prompt}],
             "temperature": 0.7,
-            "max_tokens": 150
+            "max_tokens": 200
         }
         
         for attempt in range(self.max_retries):
             try:
-                response = requests.post(self.gpt_api_url, headers=headers, json=data, timeout=30)
+                response = requests.post(self.gpt_api_url, headers=headers, json=data, timeout=15)
+                logger.debug(f"GPT API response status: {response.status_code}, content: {response.text[:100]}")
                 response.raise_for_status()
-                result = response.json()
-                tweet_text = result["choices"][0]["message"]["content"].strip()
                 
-                # Replace literal '\n' with actual newline
-                tweet_text = tweet_text.replace("\\n", "\n")
-                # Remove empty lines and strip whitespace
-                lines = [line.strip() for line in tweet_text.split("\n") if line.strip()]
-                tweet_text = "\n".join(lines)
+                # Only increment GPT call counter on successful request
+                self.gpt_calls['minute'] += 1
+                self.gpt_calls['day'] += 1
                 
-                # Ensure the tweet is under 280 characters
-                if len(tweet_text) > 280:
-                    tweet_text = tweet_text[:277] + "..."
+                try:
+                    result = response.json()
+                except ValueError as ve:
+                    logger.error(f"Failed to parse GPT API response: {ve}, response: {response.text[:200]}")
+                    self.send_telegram_notification(f"Failed to parse GPT API response: {ve}, response: {response.text[:200]}")
+                    return {"news_to_post": "", "status": False}
                 
-                logger.debug(f"Formatted tweet: {repr(tweet_text)}")
-                return tweet_text
+                output = result["choices"][0]["message"]["content"].strip()
+                logger.debug(f"GPT output before JSON parsing: {output}")
                 
-            except requests.exceptions.Timeout:
-                logger.warning(f"GPT API timeout on attempt {attempt + 1}")
-            except requests.exceptions.RequestException as e:
-                logger.warning(f"GPT API request error on attempt {attempt + 1}: {e}")
+                # Strip markdown code block markers if present
+                if output.startswith("```json"):
+                    output = output[7:]  # Remove ```json
+                if output.startswith("```"):
+                    output = output[3:]   # Remove ``` if no language specified
+                if output.endswith("```"):
+                    output = output[:-3]  # Remove closing ```
+                output = output.strip()
+                
+                try:
+                    parsed = json.loads(output)
+                except json.JSONDecodeError as je:
+                    logger.error(f"Failed to parse GPT output as JSON: {je}, output: {output[:200]}")
+                    self.send_telegram_notification(f"Failed to parse GPT output as JSON: {je}, output: {output[:200]}")
+                    return {"news_to_post": "", "status": False}
+                
+                if parsed.get("status", False):
+                    tweet_text = parsed.get("news_to_post", "").replace("\\n", "\n")
+                    if len(tweet_text) > 280:
+                        tweet_text = tweet_text[:277] + "..."
+                    parsed["news_to_post"] = tweet_text
+                return parsed
+            except requests.exceptions.HTTPError as he:
+                logger.error(f"GPT API HTTP error: {he}, status: {response.status_code}, response: {response.text[:200]}")
+                self.send_telegram_notification(f"GPT API HTTP error: {he}, status: {response.status_code}")
+                if response.status_code == 429:  # Rate limit
+                    logger.warning("GPT API rate limit reached. Waiting 2 minutes...")
+                    self.send_telegram_notification("GPT API rate limit reached. Waiting 2 minutes...")
+                    time.sleep(120)  # Wait 2 minutes
+                    if attempt < self.max_retries - 1:
+                        continue
+                    else:
+                        logger.error("GPT API rate limit persists after retries. Closing program.")
+                        self.send_telegram_notification("GPT API rate limit persists after retries. Closing program.")
+                        sys.exit(1)
+                return {"news_to_post": "", "status": False}
             except Exception as e:
-                logger.error(f"Unexpected error calling GPT-4o API on attempt {attempt + 1}: {e}")
-            
-            if attempt < self.max_retries - 1:
-                time.sleep(self.retry_delay)
+                logger.error(f"GPT API error: {e}, attempt {attempt + 1}")
+                self.send_telegram_notification(f"GPT API error: {e}, attempt {attempt + 1}")
+                if attempt < self.max_retries - 1:
+                    time.sleep(self.retry_delay)
+                else:
+                    return {"news_to_post": "", "status": False}
         
-        logger.error("Failed to format tweet after all retries")
-        return None
+        # Fallback return if all retry attempts are exhausted
+        return {"news_to_post": "", "status": False}
 
     def send_telegram_notification(self, message: str):
-        """Send a custom notification to Telegram."""
+        """Send Telegram notification."""
         try:
             self.telegram_bot.send_message(chat_id=self.telegram_chat_id, text=message)
-            logger.info(f"Telegram notification sent: {message}")
         except Exception as e:
             logger.error(f"Failed to send Telegram notification: {e}")
 
     def post_news(self):
-        """Fetch news, format, and post to X."""
+        """Fetch, filter, and post news to X."""
         try:
-            logger.info("Starting news posting process")
             posted_articles = self.load_posted_articles()
             news_items = self.fetch_rss_news()
             
             if not news_items:
-                logger.info("No news found for today, skipping post")
+                logger.info("No news found for today")
                 return
 
             for item in news_items:
                 article_id = item["link"] or item["title"]
                 if article_id in posted_articles:
-                    logger.debug(f"Article already posted: {item['title']}")
                     continue
 
-                tweet_text = self.format_tweet_with_gpt(item["title"], item["summary"])
-                if not tweet_text:
-                    logger.warning(f"Failed to format tweet for: {item['title']}")
+                result = self.is_crypto_news(item["title"], item["summary"])
+                if not result["status"]:
+                    logger.info(f"Skipping non-crypto/promotional news: {item['title']}")
+                    self.save_posted_article(article_id)
                     continue
+
+                tweet_text = result["news_to_post"]
+                if len(tweet_text) > 280:
+                    logger.warning(f"Tweet too long ({len(tweet_text)} chars): {item['title']}")
+                    self.send_telegram_notification(
+                        f"Tweet too long ({len(tweet_text)} chars) for: {item['title'][:50]}..."
+                    )
+                    self.save_posted_article(article_id)
+                    continue
+
+                if not self.check_api_limits("x"):
+                    return
 
                 for attempt in range(self.max_retries):
                     try:
                         self.client.create_tweet(text=tweet_text)
-                        logger.info(f"Successfully posted tweet: {tweet_text}")
+                        logger.info(f"Posted: {tweet_text}")
                         self.save_posted_article(article_id)
                         
-                        # Calculate next post time in UTC and IST
-                        next_post_time_utc = datetime.now(timezone.utc) + timedelta(minutes=30)
+                        next_post_time_utc = datetime.now(timezone.utc) + timedelta(minutes=1.5)
                         next_post_time_ist = next_post_time_utc + timedelta(hours=5, minutes=30)
-                        next_post_str_utc = next_post_time_utc.strftime("%Y-%m-%d %H:%M:%S UTC")
-                        next_post_str_ist = next_post_time_ist.strftime("%Y-%m-%d %H:%M:%S IST")
-                        
-                        # Send updated Telegram notification
-                        self.send_telegram_notification(
-                            f"Successfully posted on X\nNext post scheduled at:\nIST: {next_post_str_ist}\nUTC: {next_post_str_utc}"
-                        )
-                        return  # Successfully posted, exit function
-                    except tweepy.TooManyRequests:
-                        logger.warning("Rate limit exceeded, waiting...")
-                        time.sleep(900)  # Wait 15 minutes
-                    except tweepy.Forbidden as e:
-                        logger.error(f"Forbidden error posting to X: {e}")
-                        break  # Don't retry on permission errors
+                        logger.debug(f"Next post time UTC: {next_post_time_utc}, IST: {next_post_time_ist}")
+                        try:
+                            self.send_telegram_notification(
+                                f"Posted on X\nNext post: {next_post_time_ist.strftime('%Y-%m-%d %H:%M:%S IST')}"
+                            )
+                        except ValueError as ve:
+                            logger.error(f"strftime error: {ve}")
+                            self.send_telegram_notification(f"strftime error in post_news: {ve}")
+                        return
+                    except tweepy.TooManyRequests as e:
+                        logger.warning(f"X API rate limit: {e}")
+                        self.send_telegram_notification(f"X API rate limit: {e}")
+                        time.sleep(300)
                     except Exception as e:
-                        logger.warning(f"Error posting to X on attempt {attempt + 1}: {e}")
+                        logger.error(f"X posting error: {e}")
+                        self.send_telegram_notification(f"X posting error: {e}")
                         if attempt < self.max_retries - 1:
                             time.sleep(self.retry_delay)
-                
-                logger.error(f"Failed to post tweet after all retries: {item['title']}")
-                
         except Exception as e:
-            logger.error(f"Unexpected error in post_news: {e}")
+            logger.error(f"Post_news error: {e}\n{traceback.format_exc()}")
+            self.send_telegram_notification(f"Post_news error: {e}\n{traceback.format_exc()}")
 
     def run(self):
         """Main execution loop."""
-        logger.info("Starting X autoposting bot...")
         self.send_telegram_notification("HodlWhaleX started...")
-        
-        # Schedule posting every 30 minutes
-        schedule.every(30).minutes.do(self.post_news)
-        
-        # Run once immediately
-        self.post_news()
-        
+        schedule.every(90).minutes.do(self.post_news)
         while True:
             try:
                 schedule.run_pending()
-                time.sleep(60)
+                time.sleep(1)
             except KeyboardInterrupt:
                 self.send_telegram_notification("HodlWhaleX stopped...")
-                logger.info("Bot stopped by user")
                 break
             except Exception as e:
-                logger.error(f"Unexpected error in main loop: {e}")
-                time.sleep(300)  # Wait 5 minutes before continuing
+                logger.error(f"Main loop error: {e}\n{traceback.format_exc()}")
+                self.send_telegram_notification(f"Main loop error: {e}\n{traceback.format_exc()}")
+                time.sleep(60)
 
 if __name__ == "__main__":
     bot = XAutopostingBot()

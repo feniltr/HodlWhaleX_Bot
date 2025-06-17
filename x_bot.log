@@ -250,3 +250,180 @@ UTC: 2025-06-15 13:29:03 UTC
 2025-06-16 00:07:57,557 - INFO - Found article from today: Why Is BlackRock's IBIT Bitcoin ETF Soaring?
 2025-06-16 00:07:57,558 - INFO - Found 19 news items from today
 2025-06-16 00:07:59,581 - WARNING - Rate limit exceeded. Sleeping for 900 seconds.
+2025-06-16 22:18:19,903 - INFO - All required environment variables found
+2025-06-16 22:18:19,904 - INFO - X API client initialized successfully
+2025-06-16 22:18:19,904 - INFO - Starting X autoposting bot...
+2025-06-16 22:18:20,757 - INFO - Telegram notification sent: HodlWhaleX started...
+2025-06-16 22:18:20,758 - INFO - Starting news posting process
+2025-06-16 22:18:20,766 - INFO - Loaded 22 previously posted articles
+2025-06-16 22:18:21,262 - INFO - Fetched 25 articles from https://www.coindesk.com/arc/outboundfeeds/rss
+2025-06-16 22:18:21,262 - INFO - Found article from today: SUI Is ‘On the Edge of a New Run Towards Highs,' Says Crypto Analyst Michaël Van De Poppe
+2025-06-16 22:18:21,264 - INFO - Found article from today: TON Moves Past $3 Milestone on High Trading Volume
+2025-06-16 22:18:21,264 - INFO - Found article from today: BNB Climbs as Transaction Activity Surges, DEX Volume Tops $100B
+2025-06-16 22:18:21,265 - INFO - Found article from today: AVAX Rises 3% in V-Shaped Recovery, Defies Middle East Uncertainty
+2025-06-16 22:18:21,265 - INFO - Found article from today: NEAR Surges 6% to Break Key Resistance
+2025-06-16 22:18:21,266 - INFO - Found article from today: U.S.-Listed Bitcoin Miners' Share of Network Hashrate Hit Record High in June: JPMorgan
+2025-06-16 22:18:21,266 - INFO - Found article from today: ATOM Surges 6% as Crypto Markets Bounce Back
+2025-06-16 22:18:21,266 - INFO - Found article from today: Home on the (BTC) Range
+2025-06-16 22:18:21,267 - INFO - Found article from today: OCC Green-Lights Crypto Activities for Banks
+2025-06-16 22:18:21,267 - INFO - Found article from today: Crypto Exchange WhiteBIT's Token Jumps 30% Over Juventus Partnership
+2025-06-16 22:18:21,267 - INFO - Found article from today: Stablecoins to Evolve Into 'Money Rail of Internet' Once GENIUS Act Is Passed: Bernstein
+2025-06-16 22:18:21,268 - INFO - Found article from today: Donald Trump's Truth Social Files for Dual Bitcoin and Ether ETF
+2025-06-16 22:18:21,268 - INFO - Found article from today: CoinDesk 20 Performance Update: Solana (SOL) Jumps 7.3% as All Assets Trade Higher
+2025-06-16 22:18:21,270 - INFO - Found article from today: Tron Looks to Go Public in the U.S., Form Strategy-Like TRX Holding Firm: FT
+2025-06-16 22:18:21,271 - INFO - Found article from today: Cardano (ADA) Breaks Above $0.64 as Staking Addresses Top 1.3 Million
+2025-06-16 22:18:21,271 - INFO - Found article from today: Strategy Adds Over 10K BTC to Its Bitcoin Treasury, Funded by New STRD Offering
+2025-06-16 22:18:21,272 - INFO - Found article from today: Ether Price Surges 4% as Markets Mostly Shrug Off Escalating Middle East Tensions
+2025-06-16 22:18:21,273 - INFO - Found article from today: Crypto Daybook Americas: Bitcoin Holds Above $100K as Iran, Israel Trade Blows
+2025-06-16 22:18:21,274 - INFO - Found article from today: UNI Jumps 7%; Crypto Analyst Sees Breakout Momentum Toward $10
+2025-06-16 22:18:21,275 - INFO - Found article from today: Pakistan Engages Michael Saylor in Bold Push Toward Bitcoin-Backed Economy
+2025-06-16 22:18:21,276 - INFO - Found article from today: Hyperliquid's HYPE Becomes Fifth Largest Token in Futures Trading; XRP Remains Ahead
+2025-06-16 22:18:21,276 - INFO - Found article from today: UK Startup Optalysys Debuts Server for Blockchains
+2025-06-16 22:18:21,277 - INFO - Found article from today: H100 Group Targets $79 Million Raise to Power Bitcoin Strategy
+2025-06-16 22:18:21,278 - INFO - Found article from today: TON-Based Protocol Affluent Wants to Make Telegram a Financial Super App
+2025-06-16 22:18:21,279 - INFO - Found article from today: Vietnam Passes Landmark Law Recognizing Crypto Assets
+2025-06-16 22:18:21,531 - INFO - Fetched 31 articles from https://cointelegraph.com/rss
+2025-06-16 22:18:21,532 - INFO - Found article from today: Gemini, Coinbase expected to secure EU licenses under MiCA — Report
+2025-06-16 22:18:21,533 - INFO - Found article from today: Cointelegraph joins forces with Nansen to boost crypto journalism with onchain data
+2025-06-16 22:18:21,533 - INFO - Found article from today: Crypto regulation needs more technologists and fewer suits
+2025-06-16 22:18:21,534 - INFO - Found article from today: SRM to build $210M TRX treasury, rebrand as Tron Inc. with Justin Sun as adviser
+2025-06-16 22:18:21,535 - INFO - Found article from today: From $2.5M loss to $65M gain: Inside the playbook of ‘recycled’ crypto founders
+2025-06-16 22:18:21,536 - INFO - Found article from today: Rethinking Sweden’s cashless society: An offline e-cash option is needed
+2025-06-16 22:18:21,537 - INFO - Found article from today: How to use ChatGPT for crypto strategy, signals, and sentiment
+2025-06-16 22:18:21,538 - INFO - Found article from today: Here’s what happened in crypto today
+2025-06-16 22:18:21,539 - INFO - Found article from today: Cointelegraph goes onchain: CTDG initiative to secure Web3 with live validators
+2025-06-16 22:18:21,540 - INFO - Found article from today: Trump’s Truth Social files S-1 for dual Bitcoin and Ether ETF
+2025-06-16 22:18:21,540 - INFO - Found article from today: Can you mine Bitcoin with a gaming PC? Here’s what you need to know
+2025-06-16 22:18:21,541 - INFO - Found article from today: How VCs trade token unlocks (and what you can learn from them)
+2025-06-16 22:18:21,542 - INFO - Found article from today: How to use AI (ChatGPT + Grok) to find the next big altcoin
+2025-06-16 22:18:21,543 - INFO - Found article from today: El Salvador has bought 240 Bitcoin since IMF non-accumulation agreement
+2025-06-16 22:18:21,545 - INFO - Found article from today: Strategy adds $1B in Bitcoin as Israel-Iran conflict pressures markets
+2025-06-16 22:18:21,546 - INFO - Found article from today: Why is XRP price up today?
+2025-06-16 22:18:21,555 - INFO - Found article from today: Bitget and UNICEF to train 300K girls in blockchain across 8 nations
+2025-06-16 22:18:21,556 - INFO - Found article from today: Ethereum whales are buying most ETH since 2018
+2025-06-16 22:18:21,557 - INFO - Found article from today: Amazon to invest $13B in Australian AI data center infrastructure
+2025-06-16 22:18:21,558 - INFO - Found article from today: Ex-TON Foundation exec launches crypto investment app on Telegram
+2025-06-16 22:18:21,559 - INFO - Found article from today: Why is Solana (SOL) price up today?
+2025-06-16 22:18:21,560 - INFO - Found article from today: Tether blocks $12.3M in USDT tied to suspicious Tron addresses
+2025-06-16 22:18:21,561 - INFO - Found article from today: $112K BTC was not ‘bull market peak’: 5 things to know in Bitcoin this week
+2025-06-16 22:18:21,562 - INFO - Found article from today: Crypto funds notch $1.9B of inflows as Bitcoin rebounds
+2025-06-16 22:18:21,563 - INFO - Found article from today: Metaplanet’s Bitcoin holdings hits 10,000 BTC, beating Coinbase
+2025-06-16 22:18:21,564 - INFO - Found article from today: Bitcoin buying firms must weigh quitting as risks emerge: VanEck
+2025-06-16 22:18:21,565 - INFO - Found article from today: Crypto user loses $6.9M to a cold wallet from China’s TikTok
+2025-06-16 22:18:21,566 - INFO - Found article from today: Bitcoin closer to equities than gold as Middle East war deepens
+2025-06-16 22:18:21,568 - INFO - Found article from today: Bybit targets Q3 launch of new Solana-based DEX Byreal
+2025-06-16 22:18:21,569 - INFO - Found article from today: Ethereum whales, sharks keep buying up ETH as retail cashes out
+2025-06-16 22:18:22,954 - INFO - Fetched 57 articles from https://decrypt.co/feed
+2025-06-16 22:18:22,955 - INFO - Found article from today: SRM Stock Soars 580% as Justin Sun's Tron Eyes Nasdaq Debut
+2025-06-16 22:18:22,956 - INFO - Found article from today: Trump Media Files to Launch Truth Social Bitcoin and Ethereum ETF
+2025-06-16 22:18:22,956 - INFO - Found article from today: Coinbase, Gemini Angling for MiCA Licenses in Malta and Luxembourg: Reuters
+2025-06-16 22:18:22,957 - INFO - Found article from today: Hyperliquid, Solana Lead Altcoin Rally as Institutions Pour $1.9B Into Crypto Funds
+2025-06-16 22:18:22,957 - INFO - Found article from today: Kidnappers Release TikTok Crypto Influencer After Finding Out He’s Broke
+2025-06-16 22:18:22,958 - INFO - Found article from today: Alabama Regulator Recovers $125K in Crypto Lost to Pig Butchering Scams
+2025-06-16 22:18:22,959 - INFO - Found article from today: Vietnam Passes Landmark Law Defining Digital Assets, Boosting AI and Chip Sectors
+2025-06-16 22:18:22,959 - INFO - Found article from today: Trump Discloses $57M Windfall From Crypto Venture World Liberty Financial
+2025-06-16 22:18:22,960 - INFO - Found article from today: Digital Finance Reform Could Add Billions to Australia's Economy, New Research Shows
+2025-06-16 22:18:22,960 - INFO - Found article from today: Metaplanet Reaches 10,000 BTC Target Amid $210M Bond Issuance
+2025-06-16 22:18:22,961 - INFO - Found 65 news items from today
+2025-06-16 22:18:25,097 - INFO - Successfully posted tweet: 🐋💼 Ethereum whales & sharks are on the prowl! They've increased their $ETH holdings by 3.72% while retail investors take profits. 📈💰
+Are the big players seeing something we don't? 🤔
+#Ethereum #Crypto #ETH #Whales #Investing #CryptoTrends
+2025-06-16 22:18:25,441 - INFO - Telegram notification sent: Successfully posted on X
+Next post scheduled at:
+IST: 2025-06-16 22:48:25 IST
+UTC: 2025-06-16 17:18:25 UTC
+2025-06-16 22:18:49,476 - INFO - Telegram notification sent: HodlWhaleX stopped...
+2025-06-16 22:18:49,476 - INFO - Bot stopped by user
+2025-06-17 00:39:16,025 - ERROR - Missing required environment variables: ['API_KEY', 'API_SECRET', 'ACCESS_TOKEN', 'ACCESS_TOKEN_SECRET', 'BEARER_TOKEN', 'GPT_API_KEY', 'TELEGRAM_TOKEN', 'TELEGRAM_CHAT_ID']
+2025-06-17 00:43:58,036 - INFO - All required environment variables found
+2025-06-17 00:43:58,037 - INFO - X API client initialized successfully
+2025-06-17 00:43:58,038 - INFO - Starting X autoposting bot...
+2025-06-17 00:43:58,040 - INFO - Starting news posting process
+2025-06-17 00:43:58,053 - INFO - Loaded 23 previously posted articles
+2025-06-17 00:43:58,363 - INFO - Fetched 31 articles from cointelegraph
+2025-06-17 00:43:58,723 - INFO - Fetched 25 articles from coindesk
+2025-06-17 00:43:58,724 - INFO - Telegram notification sent: 🚀 HodlWhaleX started...
+2025-06-17 00:43:58,944 - INFO - Fetched 58 articles from decrypt
+2025-06-17 00:44:14,970 - ERROR - Failed to parse GPT response: No JSON array found in response
+2025-06-17 00:44:15,309 - WARNING - Failed to score articles with GPT-4o-mini API: No JSON array found in response
+2025-06-17 00:44:15,641 - INFO - Found 70 crypto/Web3 news items from today, sorted by importance
+2025-06-17 00:44:16,060 - INFO - Telegram notification sent: Failed to score articles, using fallback scoring
+2025-06-17 00:44:18,826 - INFO - Successfully posted tweet: 🚀 Price Predictions for 6/16! 📈
+🔹 SPX: 📊
+🔹 DXY: 💵
+🔹 BTC: 🪙
+🔹 ETH: 💎
+🔹 XRP: ⚡
+🔹 BNB: 🐳
+🔹 SOL: ☀️
+🔹 DOGE: 🐶
+🔹 ADA: 🌐
+🔹 HYPE: 🔥
+What are your thoughts? 💭👇
+2025-06-17 00:44:19,198 - INFO - Telegram notification sent: ✅ Successfully posted on X
+📅 Next post:
+IST: 2025-06-17 02:14:18
+UTC: 2025-06-16 20:44:18
+2025-06-17 00:44:35,855 - INFO - Bot stopped by user
+2025-06-17 00:44:36,183 - INFO - Telegram notification sent: ⏹️ HodlWhaleX stopped...
+2025-06-17 22:37:54,237 - ERROR - Missing environment variables: ['API_KEY', 'API_SECRET', 'ACCESS_TOKEN', 'ACCESS_TOKEN_SECRET', 'BEARER_TOKEN', 'GPT_API_KEY', 'TELEGRAM_TOKEN', 'TELEGRAM_CHAT_ID']
+2025-06-17 22:38:20,404 - ERROR - Post_news error: Invalid format specifier
+2025-06-17 22:43:10,979 - ERROR - Post_news error: Invalid format specifier
+Traceback (most recent call last):
+  File "E:\HodlWhaleX_Bot\main.py", line 267, in post_news
+    result = self.is_crypto_news(item["title"], item["summary"])
+  File "E:\HodlWhaleX_Bot\main.py", line 198, in is_crypto_news
+    prompt = f"""
+ValueError: Invalid format specifier
+
+2025-06-17 22:44:41,793 - ERROR - Post_news error: Invalid format specifier
+Traceback (most recent call last):
+  File "E:\HodlWhaleX_Bot\main.py", line 267, in post_news
+    result = self.is_crypto_news(item["title"], item["summary"])
+  File "E:\HodlWhaleX_Bot\main.py", line 198, in is_crypto_news
+    prompt = f"""
+ValueError: Invalid format specifier
+
+2025-06-17 22:51:32,753 - ERROR - GPT API error: Expecting value: line 1 column 1 (char 0)
+2025-06-17 22:51:33,744 - INFO - Skipping non-crypto/promotional news: Avalanche Launches Free Gaming 'Battle Pass' With AVAX and NFT Rewards
+2025-06-17 22:51:37,964 - ERROR - GPT API error: Expecting value: line 1 column 1 (char 0)
+2025-06-17 22:51:38,924 - INFO - Skipping non-crypto/promotional news: China’s $9 AI Video Tool Kling 2.1 Adds Audio—Can It Beat Google’s $250 Veo 3?
+2025-06-17 22:51:41,366 - ERROR - GPT API error: Expecting value: line 1 column 1 (char 0)
+2025-06-17 22:51:42,948 - INFO - Skipping non-crypto/promotional news: Polymarket Odds on US Strike Against Iran Spike, Then Fall
+2025-06-17 22:51:45,304 - ERROR - GPT API error: Expecting value: line 1 column 1 (char 0)
+2025-06-17 22:51:46,250 - INFO - Skipping non-crypto/promotional news: Solana-Based Pump.fun Among List of Crypto Trading Platforms Suspended from X
+2025-06-17 22:51:47,868 - ERROR - GPT API error: Expecting value: line 1 column 1 (char 0)
+2025-06-17 22:51:49,457 - INFO - Skipping non-crypto/promotional news: Eric Trump Denies Involvement in Tron Nasdaq Deal Despite Board Role
+2025-06-17 22:51:49,457 - WARNING - GPT API limit reached
+2025-06-17 22:51:50,450 - INFO - Skipping non-crypto/promotional news: Arthur Hayes says to trade new stablecoin IPOs like a ‘hot potato’
+2025-06-17 22:51:50,451 - WARNING - GPT API limit reached
+2025-06-17 22:51:51,450 - INFO - Skipping non-crypto/promotional news: Optimism targets decentralization with ‘season 8’ governance revamp
+2025-06-17 22:51:51,451 - WARNING - GPT API limit reached
+2025-06-17 22:51:53,043 - INFO - Skipping non-crypto/promotional news: Pump.fun and its founder hit in X account suspension blitz
+2025-06-17 22:51:53,044 - WARNING - GPT API limit reached
+2025-06-17 22:51:54,525 - INFO - Skipping non-crypto/promotional news: Deribit Sees Strong Demand From Institutions, Volume on Its Block RFQ Tool Reaches $23B in Four Months
+2025-06-17 22:51:54,526 - WARNING - GPT API limit reached
+2025-06-17 22:51:55,482 - INFO - Skipping non-crypto/promotional news: SBF Portrayed in Sold-Out Prison Musical With Luigi Mangione, 'Diddy' as Inmates
+2025-06-17 22:51:55,483 - WARNING - GPT API limit reached
+2025-06-17 22:51:56,469 - INFO - Skipping non-crypto/promotional news: XRP Hits 12-Year Milestone With Over 2,700 Whales, Holding Over 1M XRP, Onchain Data Show
+2025-06-17 22:51:56,470 - WARNING - GPT API limit reached
+2025-06-17 22:51:57,517 - INFO - Skipping non-crypto/promotional news: Alex Mashinsky won’t get a piece of Celsius’ bankruptcy pie, judge says
+2025-06-17 22:51:57,518 - WARNING - GPT API limit reached
+2025-06-17 22:51:58,679 - INFO - Skipping non-crypto/promotional news: ARK Invest Offloads Over $50M in Circle Shares as Stock Extends Rally
+2025-06-17 22:51:58,679 - WARNING - GPT API limit reached
+2025-06-17 22:51:59,737 - INFO - Skipping non-crypto/promotional news: Genius Group Bitcoin treasury grows 52% as 1,000 BTC goal reaffirmed
+2025-06-17 23:00:13,529 - ERROR - GPT API error: Expecting value: line 1 column 1 (char 0), attempt 1
+2025-06-17 23:18:22,434 - ERROR - GPT API error: Expecting value: line 1 column 1 (char 0), attempt 1
+2025-06-17 23:24:34,301 - ERROR - Failed to parse GPT output as JSON: Expecting value: line 1 column 1 (char 0), output: ```json
+{
+    "news_to_post": "🎮 Exciting news for gamers! Avalanche launches a free Battle Pass NFT on Magic Eden, offering AVAX & NFT rewards for crypto enthusiasts. Explore Web3 gaming with token p
+2025-06-17 23:24:34,999 - INFO - Skipping non-crypto/promotional news: Avalanche Launches Free Gaming 'Battle Pass' With AVAX and NFT Rewards
+2025-06-17 23:24:36,868 - ERROR - Failed to parse GPT output as JSON: Expecting value: line 1 column 1 (char 0), output: ```json
+{
+    "news_to_post": "🎥 China’s Kuaishou launches Kling 2.1, an AI video tool with synchronized audio! 🚀 Can it outshine Google’s $250 Veo 3? 🤔 #AI #TechBattle #Innovation",
+    "status": tru
+2025-06-17 23:24:37,567 - INFO - Skipping non-crypto/promotional news: China’s $9 AI Video Tool Kling 2.1 Adds Audio—Can It Beat Google’s $250 Veo 3?
+2025-06-17 23:36:57,665 - ERROR - GPT API HTTP error: 500 Server Error: Internal Server Error for url: https://api.a4f.co/v1/chat/completions, status: 500, response: {"error":{"message":"Client error '429 Too Many Requests' for url 'https://api.DevsDoCode API.app/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
+2025-06-17 23:36:58,565 - INFO - Skipping non-crypto/promotional news: Avalanche Launches Free Gaming 'Battle Pass' With AVAX and NFT Rewards
+2025-06-17 23:37:00,808 - INFO - Posted: 📉 Odds on a US strike against Iran on #Polymarket saw a spike but have now fallen. This highlights the volatile nature of prediction markets powered by #blockchain tech. Stay informed on the latest trends in #Web3! 🌐 #Crypto
+2025-06-17 23:38:30,534 - INFO - Posted: 🚨 #BreakingNews: Solana-based platforms like Pump.fun and GMGN have been suspended from X without warning. 🤔 Speculation arises in the crypto community. #Solana #CryptoNews #Blockchain
