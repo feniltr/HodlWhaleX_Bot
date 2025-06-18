@@ -377,13 +377,23 @@ Status is true only if all criteria are met.
 
     def run(self):
         """Main execution loop."""
+        print("HodlWhaleX bot starting...")
         self.send_telegram_notification("HodlWhaleX started...")
+        
+        # Run the first post immediately
+        print("Running initial post...")
+        self.post_news()
+        
+        # Schedule subsequent posts every 90 minutes
         schedule.every(90).minutes.do(self.post_news)
+        print("Bot is now running. Next scheduled post in 90 minutes...")
+        
         while True:
             try:
                 schedule.run_pending()
                 time.sleep(1)
             except KeyboardInterrupt:
+                print("Bot stopped by user")
                 self.send_telegram_notification("HodlWhaleX stopped...")
                 break
             except Exception as e:

@@ -1,0 +1,15 @@
+# Copy this file to .env and fill in your actual values
+
+# X (Twitter) API Credentials
+API_KEY=your_x_api_key_here
+API_SECRET=your_x_api_secret_here
+ACCESS_TOKEN=your_x_access_token_here
+ACCESS_TOKEN_SECRET=your_x_access_token_secret_here
+BEARER_TOKEN=your_x_bearer_token_here
+
+# GPT API Key
+GPT_API_KEY=your_gpt_api_key_here
+
+# Telegram Bot Configuration
+TELEGRAM_TOKEN=your_telegram_bot_token_here
+TELEGRAM_CHAT_ID=your_telegram_chat_id_here 
