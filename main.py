@@ -351,12 +351,15 @@ Status is true only if all criteria are met.
                         logger.info(f"Posted: {tweet_text}")
                         self.save_posted_article(article_id)
                         
-                        next_post_time_utc = datetime.now(timezone.utc) + timedelta(minutes=1.5)
+                        next_post_time_utc = datetime.now(timezone.utc) + timedelta(minutes=90)
                         next_post_time_ist = next_post_time_utc + timedelta(hours=5, minutes=30)
                         logger.debug(f"Next post time UTC: {next_post_time_utc}, IST: {next_post_time_ist}")
                         try:
                             self.send_telegram_notification(
-                                f"Posted on X\nNext post: {next_post_time_ist.strftime('%Y-%m-%d %H:%M:%S IST')}"
+                                f"✅ Successfully posted on X\n"
+                                f"📅 Next post:\n"
+                                f"IST: {next_post_time_ist.strftime('%Y-%m-%d %H:%M:%S')}\n"
+                                f"UTC: {next_post_time_utc.strftime('%Y-%m-%d %H:%M:%S')}"
                             )
                         except ValueError as ve:
                             logger.error(f"strftime error: {ve}")
@@ -403,4 +406,4 @@ Status is true only if all criteria are met.
 
 if __name__ == "__main__":
     bot = XAutopostingBot()
-    bot.run()
+    bot.run() 
