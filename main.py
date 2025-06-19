@@ -46,9 +46,8 @@ class XAutopostingBot:
         self.validate_environment()
         self.setup_api_client()
         self.rss_feeds = [
-            "https://www.coindesk.com/arc/outboundfeeds/rss",
-            "https://cointelegraph.com/rss",
-            "https://decrypt.co/feed"
+            "https://cryptopotato.com/feed/",
+            "https://www.newsbtc.com/feed/",
         ]
         self.posted_articles_file = "posted_articles.txt"
         self.gpt_api_url = "https://api.a4f.co/v1/chat/completions"
@@ -209,7 +208,7 @@ Title: {title}
 Summary: {summary}
 
 Analyze if this news is:
-1. Related to cryptocurrency, blockchain, or Web3
+1. Related to cryptocurrency, blockchain, or Web3 but only the engaging and interesting one
 2. Not promotional (e.g., not about stacking coins in wallets or promoting services)
 3. Complete (not redirecting to another page for full content)
 4. Crypto whale activity
