@@ -186,7 +186,7 @@ class XAutopostingBot:
                 logger.error(f"Error fetching RSS feed {feed_url}: {e}")
                 self.send_telegram_notification(f"RSS feed error: {e}")
         
-        news_items.sort(key=lambda x: x["pub_date"])
+        news_items.sort(key=lambda x: x["pub_date"], reverse=True)
         return news_items
 
     def is_crypto_news(self, title: str, summary: str) -> Dict:
@@ -216,7 +216,7 @@ Analyze if this news is:
 
 Return JSON:
 {{
-    "news_to_post": "Formatted tweet text under 280 characters with emojis, line breaks, and hashtags, and relevant hashtags, and relevant emojis, and relevant line breaks, and relevant formatting, Eye catching title, Dont use \"\" in news_to_post or anything which is json unfriendly ",
+    "news_to_post": "Formatted tweet text under 280 characters with emojis, line breaks, and hashtags, and relevant hashtags, and relevant emojis, and relevant line breaks, and relevant formatting, Eye catching title, Dont use \"\" in news_to_post or anything which is json unfriendly, use simple words(Human written) and post should make sense accroding to description don anything outoff description of news",
     "status": true/false
 }}
 Status is true only if all criteria are met.
